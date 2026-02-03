@@ -304,24 +304,30 @@ async def seed_enhanced_health_rules():
     print(f"  Medium Calorie Items: {len(categories['medium_calorie'])}")
     print(f"  High Calorie Items: {len(categories['high_calorie'])}")
     print(f"  Low Oil Items: {len(categories['low_oil'])}")
-    print(f"  Diabetic Friendly Items: {len(categories['diabetic_friendly'])}")
-    print(f"  BP Friendly Items: {len(categories['bp_friendly'])}")
-    print(f"  Acidity Friendly Items: {len(categories['acidity_friendly'])}")
     print("-" * 80)
     
     # Create enhanced health rules
     health_rules = create_max_probability_health_rules(categories)
     
-    session = aioboto3.Session(
-        aws_access_key_id=settings.aws_access_key_id,
-        aws_secret_access_key=settings.aws_secret_access_key,
-        aws_session_token=settings.aws_session_token,
-        region_name=settings.aws_region
-    )
+    # For local DynamoDB, use dummy credentials and local endpoint
+    endpoint_url = settings.dynamodb_endpoint or "http://localhost:8001"
+    
+    # Create session with credentials (same pattern as other scripts)
+    session_kwargs = {
+        "aws_access_key_id": settings.aws_access_key_id or "dummy",
+        "aws_secret_access_key": settings.aws_secret_access_key or "dummy",
+        "region_name": settings.aws_region
+    }
+    
+    # Only add session token if it exists
+    if settings.aws_session_token:
+        session_kwargs["aws_session_token"] = settings.aws_session_token
+        
+    session = aioboto3.Session(**session_kwargs)
     
     async with session.client(
         "dynamodb",
-        endpoint_url=settings.dynamodb_endpoint,
+        endpoint_url=endpoint_url,
         region_name=settings.aws_region
     ) as ddb:
         for rule in health_rules:

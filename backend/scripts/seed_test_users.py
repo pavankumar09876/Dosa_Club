@@ -16,22 +16,28 @@ from datetime import datetime
 from app.core.config import settings
 
 
-async def create_test_user(name: str = "Pavan_Kumar"):
-    """
-    Create a test user in DynamoDB.
+async def create_test_user(name: str):
+    """Create a test user with sample data."""
     
-    Note: This creates a regular user, not an admin.
-    For admin functionality, implement proper authentication separately.
-    """
-    session = aioboto3.Session(
-        aws_access_key_id=settings.aws_access_key_id,
-        aws_secret_access_key=settings.aws_secret_access_key,
-        aws_session_token=settings.aws_session_token,
-        region_name=settings.aws_region
-    )
+    # For local DynamoDB, use dummy credentials and local endpoint
+    endpoint_url = settings.dynamodb_endpoint or "http://localhost:8001"
+    
+    # Create session with credentials (same pattern as other scripts)
+    session_kwargs = {
+        "aws_access_key_id": settings.aws_access_key_id or "dummy",
+        "aws_secret_access_key": settings.aws_secret_access_key or "dummy",
+        "region_name": settings.aws_region
+    }
+    
+    # Only add session token if it exists
+    if settings.aws_session_token:
+        session_kwargs["aws_session_token"] = settings.aws_session_token
+        
+    session = aioboto3.Session(**session_kwargs)
+
     async with session.client(
         "dynamodb",
-        endpoint_url=settings.dynamodb_endpoint,
+        endpoint_url=endpoint_url,
         region_name=settings.aws_region
     ) as ddb:
         user_id = str(uuid.uuid4())

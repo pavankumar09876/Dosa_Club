@@ -27,26 +27,29 @@ from app.core.config import settings
 
 
 async def create_guest_sessions_table():
-    """
-    Create the guest_sessions DynamoDB table with the required schema.
-    """
-    try:
-        print("Creating guest_sessions table...")
+    """Create guest_sessions table in DynamoDB."""
+    
+    # For local DynamoDB, use dummy credentials and local endpoint
+    endpoint_url = settings.dynamodb_endpoint or "http://localhost:8001"
+    
+    # Create session with credentials (same pattern as other scripts)
+    session_kwargs = {
+        "aws_access_key_id": settings.aws_access_key_id or "dummy",
+        "aws_secret_access_key": settings.aws_secret_access_key or "dummy",
+        "region_name": settings.aws_region
+    }
+    
+    # Only add session token if it exists
+    if settings.aws_session_token:
+        session_kwargs["aws_session_token"] = settings.aws_session_token
         
-        # Create aioboto3 session
-        session = Session(
-            aws_access_key_id=settings.aws_access_key_id,
-            aws_secret_access_key=settings.aws_secret_access_key,
-            aws_session_token=settings.aws_session_token,
-            region_name=settings.aws_region
-        )
-        
-        # Create DynamoDB client
-        async with session.client(
-            "dynamodb",
-            region_name=settings.aws_region,
-            endpoint_url=settings.dynamodb_endpoint
-        ) as dynamodb:
+    session = Session(**session_kwargs)
+    
+    async with session.client(
+        "dynamodb",
+        endpoint_url=endpoint_url,
+        region_name=settings.aws_region
+    ) as dynamodb:
             
             # Check if table already exists
             try:
@@ -58,7 +61,8 @@ async def create_guest_sessions_table():
                 print("Table doesn't exist, creating...")
             
             # Create the table
-            response = await dynamodb.create_table(
+            try:
+                response = await dynamodb.create_table(
                 TableName="guest_sessions",
                 KeySchema=[
                     {
@@ -83,25 +87,25 @@ async def create_guest_sessions_table():
                         "Value": "Development"
                     }
                 ]
-            )
-            
-            print(f"Table creation initiated: {response['TableDescription']['TableName']}")
-            print(f"   Status: {response['TableDescription']['TableStatus']}")
-            print(f"   ARN: {response['TableDescription']['TableArn']}")
-            
-            # Wait for table to be created
-            print("Waiting for table to become active...")
-            waiter = dynamodb.get_waiter('table_exists')
-            await waiter.wait(TableName="guest_sessions")
-            
-            print("Table 'guest_sessions' is now active and ready to use!")
-            return True
-            
-    except Exception as e:
-        print(f"Error creating table: {e}")
-        import traceback
-        traceback.print_exc()
-        return False
+                )
+                
+                print(f"Table creation initiated...")
+                print(f"   Table Name: guest_sessions")
+                print(f"   Status: {response['TableDescription']['TableStatus']}")
+                
+                # Wait for table to become active
+                print("Waiting for table to become active...")
+                waiter = dynamodb.get_waiter('table_exists')
+                await waiter.wait(TableName='guest_sessions')
+                
+                print("Table 'guest_sessions' is now active and ready to use!")
+                return True
+                
+            except Exception as e:
+                print(f"Error creating table: {e}")
+                import traceback
+                traceback.print_exc()
+                return False
 
 
 async def main():

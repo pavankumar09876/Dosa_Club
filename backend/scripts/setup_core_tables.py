@@ -39,25 +39,31 @@ async def create_tables():
     """Create DynamoDB tables using credentials from settings."""
     print_banner()
     
-    if not settings.aws_access_key_id or not settings.aws_secret_access_key:
-        print("ERROR: AWS credentials not found in settings!")
-        print(f"Checked for .env at: {os.path.abspath(dotenv_path)}")
-        print("Please create a .env file in the backend/ directory with:")
-        print("   AWS_ACCESS_KEY_ID=...")
-        print("   AWS_SECRET_ACCESS_KEY=...")
-        print("   AWS_REGION=...")
-        return
+    # For local DynamoDB, use dummy credentials and local endpoint
+    endpoint_url = settings.dynamodb_endpoint or "http://localhost:8001"
+    
+    # Create session with credentials (same pattern as other scripts)
+    session_kwargs = {
+        "aws_access_key_id": settings.aws_access_key_id or "dummy",
+        "aws_secret_access_key": settings.aws_secret_access_key or "dummy",
+        "region_name": settings.aws_region
+    }
+    
+    # Only add session token if it exists
+    if settings.aws_session_token:
+        session_kwargs["aws_session_token"] = settings.aws_session_token
+        
+    session = aioboto3.Session(**session_kwargs)
 
-    session = aioboto3.Session(
-        aws_access_key_id=settings.aws_access_key_id,
-        aws_secret_access_key=settings.aws_secret_access_key,
-        aws_session_token=settings.aws_session_token,
-        region_name=settings.aws_region
-    )
+    print(f"[DEBUG] Using AWS credentials:")
+    print(f"  Access Key ID: {(settings.aws_access_key_id or 'dummy')[:10]}...")
+    print(f"  Region: {settings.aws_region}")
+    print(f"  Endpoint: {endpoint_url}")
+    print(f"  Session Token: {'Present' if settings.aws_session_token else 'None'}")
     
     async with session.client(
         "dynamodb",
-        endpoint_url=settings.dynamodb_endpoint,
+        endpoint_url=endpoint_url,
         region_name=settings.aws_region
     ) as ddb:
         existing = await ddb.list_tables()

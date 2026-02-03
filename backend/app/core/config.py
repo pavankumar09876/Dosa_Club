@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     aws_profile: Optional[str] = None
 
     # DynamoDB Configuration
-    dynamodb_endpoint: Optional[str] = None
+    dynamodb_endpoint: Optional[str] = "http://localhost:8001"
     dynamodb_tables: dict = {
         "users": "users",
         "menu_items": "menu_items",
