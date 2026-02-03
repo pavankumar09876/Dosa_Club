@@ -1,0 +1,6 @@
+.env
+__pycache__/
+*.pyc
+venv/
+initialize_data.py
+requirements_clean.txt

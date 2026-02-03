@@ -1,0 +1,631 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply box-border;
+  }
+
+  body {
+    @apply antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+}
+
+@layer utilities {
+
+  /* GPU-accelerated transforms */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  /* Premium glow effect */
+  .glow {
+    filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.4));
+  }
+
+  .glow-strong {
+    filter: drop-shadow(0 0 30px rgba(255, 107, 53, 0.6)) drop-shadow(0 0 60px rgba(255, 107, 53, 0.3));
+  }
+}
+
+/* ====================================
+   PREMIUM GLASSMORPHISM INPUT DESIGN
+   ==================================== */
+
+/* Base Input - Glass Surface */
+.ant-input {
+  background: rgba(255, 255, 255, 0.04) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 16px !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  font-size: 16px !important;
+  padding: 14px 20px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.ant-input::placeholder {
+  color: rgba(255, 255, 255, 0.35) !important;
+  font-weight: 400 !important;
+}
+
+/* Hover State - Subtle Lift */
+.ant-input:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Focus State - Premium Orange Glow */
+.ant-input:focus,
+.ant-input-focused {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 107, 53, 0.6) !important;
+  transform: translateY(-2px) scale(1.01) !important;
+  box-shadow:
+    0 0 0 3px rgba(255, 107, 53, 0.12),
+    0 8px 24px rgba(255, 107, 53, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.2) !important;
+  outline: none !important;
+}
+
+/* Input with Prefix/Suffix (Icon Wrapper) */
+.ant-input-affix-wrapper {
+  background: rgba(255, 255, 255, 0.04) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 16px !important;
+  padding: 14px 20px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.ant-input-affix-wrapper:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+.ant-input-affix-wrapper-focused,
+.ant-input-affix-wrapper:focus-within {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 107, 53, 0.6) !important;
+  transform: translateY(-2px) scale(1.01) !important;
+  box-shadow:
+    0 0 0 3px rgba(255, 107, 53, 0.12),
+    0 8px 24px rgba(255, 107, 53, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Inner Input (inside affix wrapper) */
+.ant-input-affix-wrapper>input.ant-input {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  font-size: 16px !important;
+  padding: 0 !important;
+  transform: none !important;
+}
+
+.ant-input-affix-wrapper>input.ant-input::placeholder {
+  color: rgba(255, 255, 255, 0.35) !important;
+}
+
+/* Icon Styling */
+.ant-input-prefix,
+.ant-input-suffix {
+  color: rgba(255, 255, 255, 0.4) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  font-size: 18px !important;
+}
+
+/* Icon Animation on Focus */
+.ant-input-affix-wrapper-focused .ant-input-prefix,
+.ant-input-affix-wrapper:focus-within .ant-input-prefix {
+  color: rgba(255, 107, 53, 0.9) !important;
+  transform: scale(1.1) !important;
+}
+
+/* Disabled State */
+.ant-input-disabled,
+.ant-input-affix-wrapper-disabled {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+}
+
+/* Remove default outline for all states */
+.ant-input:focus,
+.ant-input-focused,
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper-focused {
+  outline: none !important;
+  outline-offset: 0 !important;
+}
+
+/* Form Item Label Styling */
+.ant-form-item-label>label {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+
+/* Error State */
+.ant-form-item-has-error .ant-input,
+.ant-form-item-has-error .ant-input-affix-wrapper {
+  border-color: rgba(239, 68, 68, 0.6) !important;
+}
+
+.ant-form-item-has-error .ant-input:focus,
+.ant-form-item-has-error .ant-input-affix-wrapper-focused {
+  box-shadow:
+    0 0 0 3px rgba(239, 68, 68, 0.12),
+    0 8px 24px rgba(239, 68, 68, 0.15) !important;
+}
+
+/* ====================================
+   INPUT NUMBER STYLING
+   ==================================== */
+
+/* Base InputNumber - Glass Surface */
+.ant-input-number {
+  background: rgba(255, 255, 255, 0.04) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 16px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  width: 100% !important;
+}
+
+/* InputNumber inner input */
+.ant-input-number-input {
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  font-size: 16px !important;
+  padding: 14px 20px !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.ant-input-number-input::placeholder {
+  color: rgba(255, 255, 255, 0.35) !important;
+}
+
+/* InputNumber Hover */
+.ant-input-number:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* InputNumber Focus */
+.ant-input-number:focus,
+.ant-input-number-focused {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 107, 53, 0.6) !important;
+  transform: translateY(-2px) scale(1.01) !important;
+  box-shadow:
+    0 0 0 3px rgba(255, 107, 53, 0.12),
+    0 8px 24px rgba(255, 107, 53, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.2) !important;
+  outline: none !important;
+}
+
+/* InputNumber disabled */
+.ant-input-number-disabled {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+}
+
+/* Remove spin buttons */
+.ant-input-number-handler-wrap {
+  display: none !important;
+}
+
+/* ====================================
+   PREMIUM BRAND ANIMATED BUTTONS
+   Light Orange/Gold Theme for Admin Panel
+   ==================================== */
+
+/* Base Button - Light Orange/Gold with White Text */
+.ant-btn {
+  background: linear-gradient(135deg, rgba(255, 179, 71, 0.7) 0%, rgba(255, 165, 0, 0.8) 50%, rgba(255, 140, 0, 0.9) 100%) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  color: #FFFFFF !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  height: 40px !important;
+  padding: 0 16px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 2px 6px rgba(255, 165, 0, 0.2) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  transform-style: preserve-3d !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+/* Shimmer Overlay for Premium Effect */
+.ant-btn::before {
+  content: '';
+  position: absolute !important;
+  top: 0 !important;
+  left: -100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  ) !important;
+  transition: left 0.6s ease !important;
+  z-index: 1 !important;
+}
+
+/* Hover State - Enhanced Gold Animation */
+.ant-btn:hover {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.8) 0%, rgba(255, 165, 0, 0.9) 50%, rgba(255, 140, 0, 1) 100%) !important;
+  background-size: 200% 200% !important;
+  background-position: 0% 50% !important;
+  animation: gradient-sweep 2s ease-in-out infinite !important;
+  transform: translateY(-1px) scale(1.01) !important;
+  box-shadow: 
+    0 4px 12px rgba(255, 165, 0, 0.3),
+    0 0 20px rgba(255, 215, 0, 0.4) !important;
+  color: #FFFFFF !important;
+}
+
+/* Hover Shimmer Effect */
+.ant-btn:hover::before {
+  left: 100% !important;
+}
+
+/* Active/Click State - Press Effect */
+.ant-btn:active,
+.ant-btn:focus {
+  background: linear-gradient(135deg, rgba(255, 140, 0, 0.9) 0%, rgba(255, 215, 0, 0.8) 100%) !important;
+  transform: translateY(0px) scale(0.99) !important;
+  animation: press-scale 0.15s ease-out !important;
+  box-shadow: 
+    0 2px 8px rgba(255, 140, 0, 0.4),
+    0 0 15px rgba(255, 215, 0, 0.6) !important;
+  color: #FFFFFF !important;
+}
+
+/* Primary Button Variant */
+.ant-btn-primary {
+  background: linear-gradient(135deg, rgba(255, 179, 71, 0.7) 0%, rgba(255, 165, 0, 0.8) 100%) !important;
+}
+
+.ant-btn-primary:hover {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.8) 0%, rgba(255, 165, 0, 0.9) 50%, rgba(255, 140, 0, 1) 100%) !important;
+}
+
+.ant-btn-primary:active,
+.ant-btn-primary:focus {
+  background: linear-gradient(135deg, rgba(255, 140, 0, 0.9) 0%, rgba(255, 215, 0, 0.8) 100%) !important;
+}
+
+/* Default Button Variant */
+.ant-btn-default {
+  background: linear-gradient(135deg, rgba(255, 179, 71, 0.15) 0%, rgba(255, 165, 0, 0.2) 100%) !important;
+  border: 1px solid rgba(255, 165, 0, 0.3) !important;
+  color: rgba(255, 165, 0, 0.9) !important;
+}
+
+.ant-btn-default:hover {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.8) 0%, rgba(255, 165, 0, 0.9) 50%, rgba(255, 140, 0, 1) 100%) !important;
+  border-color: transparent !important;
+  color: #FFFFFF !important;
+}
+
+.ant-btn-default:active,
+.ant-btn-default:focus {
+  background: linear-gradient(135deg, rgba(255, 140, 0, 0.9) 0%, rgba(255, 215, 0, 0.8) 100%) !important;
+  border-color: transparent !important;
+  color: #FFFFFF !important;
+}
+
+/* Ghost Button Variant */
+.ant-btn-ghost {
+  background: transparent !important;
+  border: 1px solid rgba(255, 165, 0, 0.4) !important;
+  color: rgba(255, 165, 0, 0.8) !important;
+}
+
+.ant-btn-ghost:hover {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.8) 0%, rgba(255, 165, 0, 0.9) 50%, rgba(255, 140, 0, 1) 100%) !important;
+  border-color: transparent !important;
+  color: #FFFFFF !important;
+}
+
+.ant-btn-ghost:active,
+.ant-btn-ghost:focus {
+  background: linear-gradient(135deg, rgba(255, 140, 0, 0.9) 0%, rgba(255, 215, 0, 0.8) 100%) !important;
+  border-color: transparent !important;
+  color: #FFFFFF !important;
+}
+
+/* Danger Button Variant - Orange-Red Blend */
+.ant-btn-danger {
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.7) 0%, rgba(255, 140, 0, 0.8) 100%) !important;
+}
+
+.ant-btn-danger:hover {
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.8) 0%, rgba(255, 215, 0, 0.9) 50%, rgba(255, 140, 0, 1) 100%) !important;
+  color: #FFFFFF !important;
+}
+
+.ant-btn-danger:active,
+.ant-btn-danger:focus {
+  background: linear-gradient(135deg, rgba(255, 140, 0, 0.9) 0%, rgba(255, 107, 107, 0.8) 100%) !important;
+  color: #FFFFFF !important;
+}
+
+/* Disabled State - Muted Orange/Gray */
+.ant-btn-disabled,
+.ant-btn[disabled] {
+  background: linear-gradient(135deg, rgba(255, 165, 0, 0.1) 0%, rgba(255, 165, 0, 0.05) 100%) !important;
+  border: 1px solid rgba(255, 165, 0, 0.1) !important;
+  color: rgba(255, 255, 255, 0.3) !important;
+  transform: none !important;
+  animation: none !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  cursor: not-allowed !important;
+}
+
+.ant-btn-disabled::before,
+.ant-btn[disabled]::before {
+  display: none !important;
+}
+
+/* Loading State */
+.ant-btn-loading {
+  background: linear-gradient(135deg, rgba(255, 179, 71, 0.7) 0%, rgba(255, 165, 0, 0.8) 100%) !important;
+}
+
+.ant-btn-loading:hover {
+  background: linear-gradient(135deg, rgba(255, 179, 71, 0.7) 0%, rgba(255, 165, 0, 0.8) 100%) !important;
+  animation: button-glow 2s ease-in-out infinite !important;
+  transform: none !important;
+}
+
+/* Button Icon Styling */
+.ant-btn .anticon {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  font-size: 16px !important;
+}
+
+.ant-btn:hover .anticon {
+  transform: scale(1.05) rotate(3deg) !important;
+  color: #FFFFFF !important;
+}
+
+.ant-btn:active .anticon {
+  transform: scale(0.95) rotate(-1deg) !important;
+}
+
+/* Small Button Variant */
+.ant-btn-sm {
+  height: 32px !important;
+  font-size: 12px !important;
+  padding: 0 12px !important;
+}
+
+/* Large Button Variant */
+.ant-btn-lg {
+  height: 48px !important;
+  font-size: 16px !important;
+  padding: 0 20px !important;
+}
+
+/* Button Group Styling */
+.ant-btn-group .ant-btn {
+  border-radius: 0 !important;
+}
+
+.ant-btn-group .ant-btn:first-child {
+  border-top-left-radius: 8px !important;
+  border-bottom-left-radius: 8px !important;
+}
+
+.ant-btn-group .ant-btn:last-child {
+  border-top-right-radius: 8px !important;
+  border-bottom-right-radius: 8px !important;
+}
+
+/* Remove default focus outlines */
+.ant-btn:focus,
+.ant-btn:focus-visible {
+  outline: none !important;
+  outline-offset: 0 !important;
+}
+
+/* Ensure text remains readable during animations */
+.ant-btn span {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* ====================================
+   HEALTH METRICS FORM Z-INDEX FIXES
+   ==================================== */
+
+/* Health Metrics Select Dropdowns */
+.health-metrics-select-dropdown {
+  z-index: 1050 !important;
+}
+
+.health-metrics-select-dropdown .ant-select-dropdown {
+  background-color: #1F2937 !important;
+  border: 1px solid #374151 !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+  z-index: 1050 !important;
+}
+
+.health-metrics-select-dropdown .ant-select-item {
+  color: #ffffff !important;
+  background-color: transparent !important;
+}
+
+.health-metrics-select-dropdown .ant-select-item:hover {
+  background-color: #374151 !important;
+}
+
+.health-metrics-select-dropdown .ant-select-item-option-active {
+  background-color: #4B5563 !important;
+}
+
+.health-metrics-select-dropdown .ant-select-item-option-selected {
+  background-color: #FB923C !important;
+  color: #000000 !important;
+}
+
+/* Form Items z-index fix */
+.ant-form-item {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.ant-form-item-control {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* Input and Select z-index fixes */
+.ant-input,
+.ant-select-selector {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.ant-select-focused .ant-select-selector {
+  z-index: 3 !important;
+}
+
+/* Auto-fill input styling - Change white to grey */
+.ant-input:-webkit-autofill,
+.ant-input:-webkit-autofill:hover,
+.ant-input:-webkit-autofill:focus,
+.ant-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #1F2937 inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background-color: #1F2937 !important;
+  background-image: none !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+
+.ant-input:-webkit-autofill::first-line {
+  color: #ffffff !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+}
+
+/* Firefox auto-fill styling */
+.ant-input:-moz-autofill {
+  background-color: #1F2937 !important;
+}
+
+.ant-input:-moz-autofill::selection {
+  background-color: #1F2937 !important;
+  color: #ffffff !important;
+}
+
+/* General auto-fill for all browsers */
+.ant-input:autofill,
+.ant-input:autofill:hover,
+.ant-input:autofill:focus,
+.ant-input:autofill:active {
+  background-color: #1F2937 !important;
+  color: #ffffff !important;
+}
+
+/* Slider z-index fix */
+.ant-slider {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.ant-slider-handle {
+  z-index: 10 !important;
+}
+
+/* Card z-index context */
+.ant-card {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.ant-card-body {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* ====================================
+   SEARCH BAR BUTTON ALIGNMENT FIX
+   ==================================== */
+
+/* Search input with button container */
+.ant-input-search .ant-input-group {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Search input field */
+.ant-input-search .ant-input {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-right: none !important;
+}
+
+/* Search button */
+.ant-input-search .ant-input-search-button {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-left: none !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 40px !important;
+  padding: 0 12px !important;
+}
+
+/* Fix search button alignment */
+.ant-input-search .ant-input-group .ant-input-group-addon:last-child {
+  display: flex !important;
+  align-items: stretch !important;
+}
+
+/* Ensure search container is properly aligned */
+.ant-input-search {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Fix search button vertical alignment */
+.ant-input-search .ant-input-search-button .anticon {
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
